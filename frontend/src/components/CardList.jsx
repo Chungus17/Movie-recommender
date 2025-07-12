@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { Link } from "react-router";
 
 const CardList = ({ title, category }) => {
   const [data, setData] = useState([]);
@@ -24,6 +25,14 @@ const CardList = ({ title, category }) => {
       .catch((err) => console.error(err));
   }, []);
 
+  if(!data) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="text-white md:px-4">
       <h2 className="pt-10 pb-5 text-lg font-medium">
@@ -33,11 +42,13 @@ const CardList = ({ title, category }) => {
       <Swiper slidesPerView={"auto"} spaceBetween={10} className="MySwiper">
         {data.map((item, index) => (
           <SwiperSlide key={index} className="max-w-72">
+            <Link to={`/movie/${item.id}`}>
             <img
               src={`https://image.tmdb.org/t/p/w500/${item.backdrop_path}`}
               alt="Image"
               className="h-44 w-full object-center object-cover"
             />
+            </Link>
             <p className="text-center pt-2">{item.original_title}</p>
           </SwiperSlide>
         ))}
